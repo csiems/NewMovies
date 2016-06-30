@@ -1,3 +1,9 @@
 # NewMovies
 
-Add 'MyMovieDatabaseApiKey = "<API KEY>"' to your gradle.properties
+Add: 
+
+``` java
+MyMovieDatabaseApiKey = "<your api key here>"
+```
+
+to your gradle.properties
