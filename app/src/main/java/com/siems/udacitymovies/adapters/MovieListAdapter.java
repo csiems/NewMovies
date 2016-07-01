@@ -56,10 +56,11 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_poster, parent, false);
         }
-
+        String posterPath = "http://image.tmdb.org/t/p/w342" + movieObject.getPoster_path();
         ImageView listItemPosterImageView = (ImageView) convertView.findViewById(R.id.listItemPosterImageView);
         Picasso.with(mContext)
-                .load("http://image.tmdb.org/t/p/w185" + movieObject.getPoster_path())
+                .load(posterPath)
+                .placeholder(R.drawable.interstellar)
                 .fit()
                 .into(listItemPosterImageView);
 
