@@ -4,5 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="278dp"
     android:id="@+id/posterListItemImageView"
-    android:contentDescription="poster image"
-    android:background="@drawable/white"/>
+    android:contentDescription="poster image"/>
