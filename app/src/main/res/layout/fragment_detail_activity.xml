@@ -61,15 +61,6 @@
                 android:textSize="20sp"
                 android:textColor="@color/colorPrimaryText"
                 />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/runningTimeTextView"
-                android:text="120 minutes"
-                android:textSize="16sp"
-                android:textColor="@color/colorPrimaryText"
-                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

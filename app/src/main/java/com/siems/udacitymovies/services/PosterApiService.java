@@ -45,8 +45,8 @@ public class PosterApiService {
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.themoviedb.org/3/discover/movie?").newBuilder();
         urlBuilder.addQueryParameter("api_key", THE_MOVIE_DB_API_KEY);
         urlBuilder.addQueryParameter("sort_by", sortOrder + ".desc");
-        urlBuilder.addQueryParameter("release_date.gte", searchYear);
-        urlBuilder.addQueryParameter("vote_count.gte", "300");
+        urlBuilder.addQueryParameter("primary_release_date.gte", searchYear);
+        urlBuilder.addQueryParameter("vote_count.gte", "100");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()

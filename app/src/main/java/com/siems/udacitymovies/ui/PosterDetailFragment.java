@@ -28,7 +28,6 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
     @Bind(R.id.movieTitleTextView) TextView mMovieTitleTextView;
     @Bind(R.id.posterDetailImageView) ImageView mPosterDetailImageView;
     @Bind(R.id.releaseYearTextView) TextView mReleaseYearTextView;
-    @Bind(R.id.runningTimeTextView) TextView mRunningTimeTextView;
     @Bind(R.id.ratingTextView) TextView mRatingTextView;
     @Bind(R.id.markAsFavoriteButton) Button mMarkAsFavoriteButton;
     @Bind(R.id.overviewTextView) TextView mOverviewTextView;
@@ -66,8 +65,6 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
                 .centerCrop()
                 .into(mPosterDetailImageView);
         mReleaseYearTextView.setText(mPoster.getRelease_date().substring(0,4));
-        //No running time in API endpoint.
-        mRunningTimeTextView.setText("120 minutes");
         mRatingTextView.setText(mPoster.getVote_average() + " / 10");
         mOverviewTextView.setText(mPoster.getOverview());
 

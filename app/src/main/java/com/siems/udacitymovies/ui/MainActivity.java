@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -92,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        logPosterNames(mPosters);
                         mAdapter = new PosterGridAdapter(getApplicationContext(), mPosters);
                         mRecyclerView.setAdapter(mAdapter);
                         mGridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
@@ -104,14 +102,5 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-    }
-
-    public void logPosterNames(ArrayList<Poster> posters) {
-        int counter = 0;
-        for (Poster poster : posters) {
-            Log.d("Poster " + counter, poster.getTitle());
-            counter++;
-        }
-
     }
 }
