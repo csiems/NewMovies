@@ -48,6 +48,7 @@ public class PosterViewHolder extends RecyclerView.ViewHolder{
         Picasso.with(mContext)
                 .load(posterUrl)
                 .fit()
+                .error(R.drawable.white)
                 .into(mPosterImageView);
 
     }

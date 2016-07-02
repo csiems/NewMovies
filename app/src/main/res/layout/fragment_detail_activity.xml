@@ -1,105 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleLayout"
-        app:layout_widthPercent="100%"
-        app:layout_heightPercent="18%"
-        android:paddingStart="20dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
-        android:background="@color/colorAccent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/movieTitleTextView"
-            android:layout_centerVertical="true"
-            android:text="Movie Title"
-            android:textSize="30sp"
-            android:textColor="@color/colorSecondaryText"
-            />
-
-    </RelativeLayout>
-
     <android.support.percent.PercentRelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/movieHeaderLayout"
-        android:layout_below="@+id/titleLayout"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="140dp"
-            android:layout_height="210dp"
-            app:layout_marginLeftPercent="10%"
-            app:layout_marginRightPercent="10%"
-            android:id="@+id/posterDetailImageView"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/white" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical"
-            app:layout_widthPercent="50%">
+            android:id="@+id/titleLayout"
+            app:layout_widthPercent="100%"
+            app:layout_heightPercent="18%"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/colorAccent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/releaseYearTextView"
-                android:text="Release Year"
-                android:textSize="20sp"
-                android:textColor="@color/colorPrimaryText"
+                android:id="@+id/movieTitleTextView"
+                android:layout_centerVertical="true"
+                android:text="Movie Title"
+                android:textSize="30sp"
+                android:textColor="@color/colorSecondaryText"
                 />
+
+        </RelativeLayout>
+
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/movieHeaderLayout"
+            android:layout_below="@+id/titleLayout"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="210dp"
+                app:layout_marginLeftPercent="10%"
+                app:layout_marginRightPercent="10%"
+                android:id="@+id/posterDetailImageView"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="vertical"
+                app:layout_widthPercent="50%">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/releaseYearTextView"
+                    android:text="Release Year"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimaryText"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingTextView"
+                    android:text="Rating / Total"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorPrimaryText"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/markAsFavoriteButton"
+                    android:layout_marginTop="20dp"
+                    android:text="Mark As Favorite"
+                    android:padding="4dp"
+                    android:background="@color/colorPrimaryButton"
+                    />
+            </LinearLayout>
+
+        </android.support.percent.PercentRelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/movieHeaderLayout"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingTextView"
-                android:text="Rating / Total"
-                android:textSize="12sp"
+                android:id="@+id/overviewTextView"
+                android:text="Overview Text"
+                android:textSize="16sp"
                 android:textColor="@color/colorPrimaryText"
                 />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/markAsFavoriteButton"
-                android:layout_marginTop="20dp"
-                android:text="Mark As Favorite"
-                android:padding="4dp"
-                android:background="@color/colorPrimaryButton"
-                />
+
         </LinearLayout>
 
     </android.support.percent.PercentRelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/movieHeaderLayout"
-        android:layout_marginTop="10dp"
-        android:paddingTop="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/overviewTextView"
-            android:text="Overview Text"
-            android:textSize="16sp"
-            android:textColor="@color/colorPrimaryText"
-            />
+</ScrollView>
 
-    </LinearLayout>
-
-</android.support.percent.PercentRelativeLayout>
