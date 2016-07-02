@@ -48,7 +48,6 @@ public class PosterViewHolder extends RecyclerView.ViewHolder{
         Picasso.with(mContext)
                 .load(posterUrl)
                 .fit()
-                .centerCrop()
                 .into(mPosterImageView);
 
     }

@@ -20,6 +20,8 @@ import org.parceler.Parcels;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+//TODO: Implement tab strip at top of view pager
+
 public class PosterDetailFragment extends Fragment implements View.OnClickListener{
     private static final int MAX_WIDTH = 185;
     private static final int MAX_HEIGHT = 278;

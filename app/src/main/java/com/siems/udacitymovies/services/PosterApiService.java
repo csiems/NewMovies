@@ -11,7 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -31,12 +34,19 @@ public class PosterApiService {
 
     public void findPosters(String sortOrder, Callback callback) {
         String THE_MOVIE_DB_API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -1);
+        Date lastYear = cal.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String searchYear = formatter.format(lastYear);
 
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.themoviedb.org/3/discover/movie?").newBuilder();
         urlBuilder.addQueryParameter("api_key", THE_MOVIE_DB_API_KEY);
-        urlBuilder.addQueryParameter("sortBy", sortOrder + ".desc");
+        urlBuilder.addQueryParameter("sort_by", sortOrder + ".desc");
+        urlBuilder.addQueryParameter("release_date.gte", searchYear);
+        urlBuilder.addQueryParameter("vote_count.gte", "300");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
