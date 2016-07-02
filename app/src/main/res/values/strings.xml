@@ -3,4 +3,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Sort preferences -->
+    <string name="pref_sort_label">Sort by:</string>
+    <string name="pref_sort_key">sortOrder</string>
+    <string name="pref_sort_popular">popularity</string>
+    <string name="pref_sort_highest_rated">vote_average</string>
+    <string name="pref_sort_label_popular">Most Popular</string>
+    <string name="pref_sort_label_highest_rated">Highest Rated</string>
+    <string name="pref_sort_default">popularity</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

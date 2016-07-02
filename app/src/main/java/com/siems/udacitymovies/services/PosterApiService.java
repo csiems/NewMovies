@@ -29,14 +29,14 @@ public class PosterApiService {
         this.mContext = context;
     }
 
-    public void findPosters(Callback callback) {
+    public void findPosters(String sortOrder, Callback callback) {
         String THE_MOVIE_DB_API_KEY = BuildConfig.THE_MOVIE_DB_API_KEY;
 
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.themoviedb.org/3/discover/movie?").newBuilder();
         urlBuilder.addQueryParameter("api_key", THE_MOVIE_DB_API_KEY);
-        urlBuilder.addQueryParameter("sortBy", "popularity.desc"); //other option will be vote_average.desc
+        urlBuilder.addQueryParameter("sortBy", sortOrder + ".desc");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
