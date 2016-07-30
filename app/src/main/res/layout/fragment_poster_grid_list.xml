@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.siems.udacitymovies.ui.MainActivity">
+    tools:context="com.siems.udacitymovies.ui.PosterGridListFragment">
 
-    <fragment
-        android:id="@+id/fragmentPosterGridList"
-        android:name="com.siems.udacitymovies.ui.PosterGridListFragment"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_poster_grid_list" />
+        android:id="@+id/recyclerView"
+        android:clipToPadding="true"/>
+
 </RelativeLayout>
