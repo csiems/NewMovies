@@ -3,7 +3,7 @@ package com.siems.udacitymovies.models;
 import org.parceler.Parcel;
 
 @Parcel
-public class Video {
+public class Trailer {
     public String id;
     public String iso6391;
     public String key;
@@ -12,10 +12,10 @@ public class Video {
     public Integer size;
     public String type;
 
-    public Video() {
+    public Trailer() {
     }
 
-    public Video(String id, String iso6391, String key, String name, String site, Integer size, String type) {
+    public Trailer(String id, String iso6391, String key, String name, String site, Integer size, String type) {
         this.id = id;
         this.iso6391 = iso6391;
         this.key = key;

@@ -105,6 +105,10 @@
                 />
 
         </LinearLayout>
+        <ListView
+            android:id="@+id/listview_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

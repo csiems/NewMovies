@@ -40,7 +40,7 @@ public class PosterGridListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getPopularPosters();
+        queryPosters();
     }
 
 
@@ -50,11 +50,11 @@ public class PosterGridListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_poster_grid_list, container, false);
         ButterKnife.bind(this, view);
-        getPopularPosters();
+        queryPosters();
         return view;
     }
 
-    public void getPopularPosters() {
+    public void queryPosters() {
         final PosterApiService posterApiService = new PosterApiService(getActivity());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = prefs.getString(getString(R.string.pref_sort_key),
