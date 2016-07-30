@@ -33,8 +33,9 @@ public class TrailerApiService {
 
         OkHttpClient client = new OkHttpClient.Builder().build();
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.themoviedb.org/3/movie/").newBuilder();
-        urlBuilder.addPathSegment(movieId + "/videos");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://api.themoviedb.org/3/movie").newBuilder();
+        urlBuilder.addPathSegment(movieId);
+        urlBuilder.addPathSegment("videos");
         urlBuilder.addQueryParameter("api_key", THE_MOVIE_DB_API_KEY);
         String url = urlBuilder.build().toString();
 

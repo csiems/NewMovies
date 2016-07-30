@@ -86,8 +86,6 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
         //Get trailers for this movie here
         queryTrailers(mPoster.getId());
 
-
-
         return view;
     }
 
