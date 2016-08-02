@@ -3,16 +3,18 @@ package com.siems.udacitymovies.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siems.udacitymovies.R;
+import com.siems.udacitymovies.adapters.TrailerListAdapter;
 import com.siems.udacitymovies.models.Poster;
 import com.siems.udacitymovies.models.Trailer;
 import com.siems.udacitymovies.services.TrailerApiService;
@@ -40,11 +42,11 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
     @Bind(R.id.ratingTextView) TextView mRatingTextView;
     @Bind(R.id.markAsFavoriteButton) Button mMarkAsFavoriteButton;
     @Bind(R.id.overviewTextView) TextView mOverviewTextView;
-    @Bind(R.id.listview_trailers) ListView mTrailersListView;
+    @Bind(R.id.recyclerview_trailers) RecyclerView mRecyclerView;
 
     private Poster mPoster;
     public ArrayList<Trailer> mTrailers = new ArrayList<>();
-
+    private TrailerListAdapter mAdapter;
 
     public static PosterDetailFragment newInstance(Poster poster) {
         PosterDetailFragment posterDetailFragment = new PosterDetailFragment();
@@ -106,13 +108,16 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO: Add trailers to ListView
+                        mAdapter = new TrailerListAdapter(mTrailers);
+                        mRecyclerView.setAdapter(mAdapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        mRecyclerView.setHasFixedSize(true);
                     }
                 });
             }
         });
-
-
     }
 
     @Override

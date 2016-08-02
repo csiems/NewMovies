@@ -90,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/movieHeaderLayout"
             android:layout_marginTop="10dp"
+            android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
@@ -103,12 +104,18 @@
                 android:textSize="16sp"
                 android:textColor="@color/colorPrimaryText"
                 />
+            <View style="@style/Divider"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trailers:"
+                android:textAppearance="?android:textAppearanceLarge"/>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-        <ListView
-            android:id="@+id/listview_trailers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

@@ -71,13 +71,12 @@ public class TrailerApiService {
             try {
                 JSONObject videoJSON = specificArray.getJSONObject(i);
                 String id = videoJSON.getString("id");
-                String iso6391 = videoJSON.getString("iso6391");
                 String key = videoJSON.getString("key");
                 String name = videoJSON.getString("name");
                 String site = videoJSON.getString("site");
                 Integer size = videoJSON.getInt("size");
                 String type = videoJSON.getString("type");
-                Trailer trailer = new Trailer(id, iso6391, key, name, site, size, type);
+                Trailer trailer = new Trailer(id, key, name, site, size, type);
                 trailers.add(trailer);
 
             } catch (JSONException e) {
