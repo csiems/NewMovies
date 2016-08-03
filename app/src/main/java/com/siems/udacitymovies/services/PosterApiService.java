@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -81,25 +80,14 @@ public class PosterApiService {
             try {
                 JSONObject movieJSON = specificArray.getJSONObject(i);
                 String poster_path = movieJSON.getString("poster_path");
-                boolean adult = movieJSON.getBoolean("adult");
                 String overview = movieJSON.getString("overview");
                 String release_date = movieJSON.getString("release_date");
-                List<Integer> genre_ids = new ArrayList<>();
-                JSONArray genre_idsJSON = movieJSON.getJSONArray("genre_ids");
-                for (int y = 0; y < genre_idsJSON.length(); y++) {
-                    genre_ids.add(Integer.parseInt(genre_idsJSON.get(y).toString()));
-                }
                 int id = movieJSON.getInt("id");
-                String original_title = movieJSON.getString("original_title");
-                String original_language = movieJSON.getString("original_language");
                 String title = movieJSON.getString("title");
                 String backdrop_path = movieJSON.getString("backdrop_path");
-                double popularity = movieJSON.getDouble("popularity");
-                int vote_count = movieJSON.getInt("vote_count");
-                boolean video = movieJSON.getBoolean("video");
                 double vote_average = movieJSON.getDouble("vote_average");
 
-                Poster poster = new Poster(poster_path, adult, overview, release_date, genre_ids, id, original_title, original_language, title, backdrop_path, popularity, vote_count, video, vote_average);
+                Poster poster = new Poster(poster_path, overview, release_date, id, title, backdrop_path, vote_average);
                 posters.add(poster);
             } catch (JSONException e) {
                 e.printStackTrace();

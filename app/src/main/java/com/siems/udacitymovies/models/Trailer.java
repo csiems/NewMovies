@@ -8,13 +8,13 @@ public class Trailer {
     public String key;
     public String name;
     public String site;
-    public Integer size;
+    public int size;
     public String type;
 
     public Trailer() {
     }
 
-    public Trailer(String id, String key, String name, String site, Integer size, String type) {
+    public Trailer(String id, String key, String name, String site, int size, String type) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -39,7 +39,7 @@ public class Trailer {
         return site;
     }
 
-    public Integer getSize() {
+    public int getSize() {
         return size;
     }
 

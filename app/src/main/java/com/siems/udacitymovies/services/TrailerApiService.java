@@ -48,7 +48,7 @@ public class TrailerApiService {
     }
 
     public ArrayList<Trailer> processResults(Response response) {
-        ArrayList<Trailer> videos = new ArrayList<>();
+        ArrayList<Trailer> trailers = new ArrayList<>();
 
         try {
             String jsonData = response.body().string();
@@ -62,7 +62,7 @@ public class TrailerApiService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return videos;
+        return trailers;
     }
 
     private ArrayList<Trailer> processArray(JSONArray specificArray) {
@@ -74,7 +74,7 @@ public class TrailerApiService {
                 String key = videoJSON.getString("key");
                 String name = videoJSON.getString("name");
                 String site = videoJSON.getString("site");
-                Integer size = videoJSON.getInt("size");
+                int size = Integer.parseInt(videoJSON.getString("size"));
                 String type = videoJSON.getString("type");
                 Trailer trailer = new Trailer(id, key, name, site, size, type);
                 trailers.add(trailer);
