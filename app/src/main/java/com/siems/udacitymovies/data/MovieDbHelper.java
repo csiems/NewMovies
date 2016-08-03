@@ -7,10 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.siems.udacitymovies.data.MovieContract.PosterEntry;
 import com.siems.udacitymovies.data.MovieContract.TrailerEntry;
 
-
-/**
- * Manages a local database for weather data.
- */
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
@@ -36,7 +32,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 " );";
 
         final String SQL_CREATE_TRAILERS_TABLE = "CREATE TABLE " + TrailerEntry.TABLE_NAME + " (" +
-                TrailerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TrailerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TrailerEntry.COLUMN_POSTER_KEY + " INTEGER NOT NULL, " +
                 TrailerEntry.COLUMN_TRAILER_ID + " TEXT NOT NULL, " +
                 TrailerEntry.COLUMN_KEY + " TEXT NOT NULL, " +
@@ -46,8 +42,9 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 TrailerEntry.COLUMN_TYPE + " TEXT NOT NULL, " +
 
                 // Set up the poster column as a foreign key to poster table.
-                " FOREIGN KEY (" + TrailerEntry.COLUMN_POSTER_KEY + ") REFERENCES " +
-                PosterEntry.TABLE_NAME + " (" + PosterEntry._ID + ");";
+                "FOREIGN KEY (" + TrailerEntry.COLUMN_POSTER_KEY + ") REFERENCES " +
+                PosterEntry.TABLE_NAME + " (" + PosterEntry._ID + "));";
+
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TRAILERS_TABLE);
@@ -55,8 +52,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
+        // This database's upgrade policy is to simply to discard the data and start over
         // Note that this only fires if you change the version number for your database.
         // It does NOT depend on the version number for your application.
         // If you want to update the schema without wiping data, commenting out the next 2 lines

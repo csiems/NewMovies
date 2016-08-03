@@ -48,7 +48,7 @@
                 app:layout_marginRightPercent="10%"
                 android:id="@+id/posterDetailImageView"
                 android:layout_alignParentStart="true"
-                android:src="@drawable/white" />
+                android:src="@drawable/placeholder_poster" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
