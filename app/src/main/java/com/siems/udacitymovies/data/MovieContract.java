@@ -48,16 +48,16 @@ public class MovieContract {
         // Column with the foreign key into the poster table.
         public static final String COLUMN_POSTER_KEY = "poster_id";
         // UID for trailer
-        public String id;
+        public static final String COLUMN_TRAILER_ID = "id";
         // String appended onto Youtube URL to find video
-        public String key;
+        public static final String COLUMN_KEY = "key";
         // Name of trailer displayed in list
-        public String name;
+        public static final String COLUMN_NAME = "name";
         // Hosting site (always Youtube)
-        public String site;
+        public static final String COLUMN_SITE = "site";
         // Display size (e.g. 1080)
-        public Integer size;
+        public static final String COLUMN_SIZE = "size";
         // Video type (usually trailer)
-        public String type;
+        public static final String COLUMN_TYPE = "type";
     }
 }
