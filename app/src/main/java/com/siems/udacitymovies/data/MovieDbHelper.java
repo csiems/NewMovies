@@ -12,7 +12,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
 
-    static final String DATABASE_NAME = "movies.db";
+    static final String DATABASE_NAME = "movie.db";
 
     public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,14 +20,15 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " + PosterEntry.TABLE_NAME + " (" +
-                PosterEntry._ID + " INTEGER PRIMARY KEY," +
+        final String SQL_CREATE_MOVIES_TABLE = "CREATE TABLE " +
+                PosterEntry.TABLE_NAME + " (" +
+                PosterEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 PosterEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
                 PosterEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
                 PosterEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL," +
-                PosterEntry.COLUMN_ID + " REAL NOT NULL, " +
-                PosterEntry.COLUMN_TITLE + " REAL NOT NULL, " +
-                PosterEntry.COLUMN_BACKDROP_PATH + " REAL NOT NULL, " +
+                PosterEntry.COLUMN_ID + " INTEGER NOT NULL, " +
+                PosterEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                PosterEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL, " +
                 PosterEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL" +
                 " );";
 
