@@ -5,8 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.siems.udacitymovies.R;
-import com.siems.udacitymovies.adapters.PosterPagerAdapter;
-import com.siems.udacitymovies.models.Poster;
+import com.siems.udacitymovies.adapters.MoviePagerAdapter;
+import com.siems.udacitymovies.models.Movie;
 
 import org.parceler.Parcels;
 
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PosterDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity {
 
     @Bind(R.id.viewPager) ViewPager mViewPager;
-    private PosterPagerAdapter adapterViewPager;
-    ArrayList<Poster> mPosters = new ArrayList<>();
+    private MoviePagerAdapter adapterViewPager;
+    ArrayList<Movie> mMovies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +27,11 @@ public class PosterDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        mPosters = Parcels.unwrap(getIntent().getParcelableExtra("posters"));
+        mMovies = Parcels.unwrap(getIntent().getParcelableExtra("movies"));
         int startingPosition = Integer.parseInt(getIntent().getStringExtra("position"));
-        adapterViewPager = new PosterPagerAdapter(getSupportFragmentManager(), mPosters);
+        adapterViewPager = new MoviePagerAdapter(getSupportFragmentManager(), mMovies);
 
-        //setting the PosterPagerAdapter returns PosterDetailFragment.
+        //setting the MoviePagerAdapter returns MovieDetailFragment.
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
     }

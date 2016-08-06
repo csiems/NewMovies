@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/fragmentPosterGridList"
-        android:name="com.siems.udacitymovies.ui.PosterGridListFragment"
+        android:name="com.siems.udacitymovies.ui.MovieGridListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_poster_grid_list" />
+        tools:layout="@layout/fragment_movie_grid_list" />
 </RelativeLayout>

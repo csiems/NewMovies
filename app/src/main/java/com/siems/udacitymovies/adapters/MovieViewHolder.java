@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.siems.udacitymovies.R;
-import com.siems.udacitymovies.models.Poster;
-import com.siems.udacitymovies.ui.PosterDetailActivity;
+import com.siems.udacitymovies.models.Movie;
+import com.siems.udacitymovies.ui.MovieDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -19,32 +19,32 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PosterViewHolder extends RecyclerView.ViewHolder{
+public class MovieViewHolder extends RecyclerView.ViewHolder{
 
     @Bind(R.id.posterListItemImageView) ImageView mPosterImageView;
 
     private Context mContext;
-    private List<Poster> mPosters = new ArrayList<>();
+    private List<Movie> mMovies = new ArrayList<>();
 
-    public PosterViewHolder(View itemView, List<Poster> posters) {
+    public MovieViewHolder(View itemView, List<Movie> movies) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mContext = itemView.getContext();
-        mPosters = posters;
+        mMovies = movies;
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int itemPosition = getLayoutPosition();
-                Intent intent = new Intent(mContext, PosterDetailActivity.class);
+                Intent intent = new Intent(mContext, MovieDetailActivity.class);
                 intent.putExtra("position", itemPosition + "");
-                intent.putExtra("posters", Parcels.wrap(mPosters));
+                intent.putExtra("movies", Parcels.wrap(mMovies));
                 mContext.startActivity(intent);
             }
         });
     }
 
-    public void bindPoster(Poster poster) {
-        String posterUrl = "http://image.tmdb.org/t/p/w185" + poster.getPoster_path();
+    public void bindPoster(Movie movie) {
+        String posterUrl = "http://image.tmdb.org/t/p/w185" + movie.getPoster_path();
         Picasso.with(mContext)
                 .load(posterUrl)
                 .fit()

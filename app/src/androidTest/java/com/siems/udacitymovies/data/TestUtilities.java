@@ -48,7 +48,7 @@ public class TestUtilities extends AndroidTestCase {
 
     static ContentValues createTestTrailerValues(long posterRowId) {
         ContentValues trailerValues = new ContentValues();
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_POSTER_KEY, posterRowId);
+        trailerValues.put(MovieContract.TrailerEntry.COLUMN_POSTER_ID, posterRowId);
         trailerValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, "56b7f59ac3a36806ec00fdcf");
         trailerValues.put(MovieContract.TrailerEntry.COLUMN_KEY, "_gBnmKOixDM");
         trailerValues.put(MovieContract.TrailerEntry.COLUMN_NAME, "First Look");

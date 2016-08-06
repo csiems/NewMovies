@@ -73,10 +73,7 @@ public class TrailerApiService {
                 String id = videoJSON.getString("id");
                 String key = videoJSON.getString("key");
                 String name = videoJSON.getString("name");
-                String site = videoJSON.getString("site");
-                int size = Integer.parseInt(videoJSON.getString("size"));
-                String type = videoJSON.getString("type");
-                Trailer trailer = new Trailer(id, key, name, site, size, type);
+                Trailer trailer = new Trailer(id, name, key);
                 trailers.add(trailer);
 
             } catch (JSONException e) {

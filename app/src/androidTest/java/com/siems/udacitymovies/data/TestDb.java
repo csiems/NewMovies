@@ -25,7 +25,7 @@ public class TestDb extends AndroidTestCase {
     }
 
     /*
-        Note that this tests that the Poster table has the correct columns.
+        Note that this tests that the Movie table has the correct columns.
      */
     public void testCreateDb() throws Throwable {
         // build a HashSet of all of the table names we wish to look for
@@ -94,7 +94,7 @@ public class TestDb extends AndroidTestCase {
     public void testTrailerTable() {
         // First insert the poster, and then use the posterRowId to insert the trailer.
         long posterRowId = insertPoster();
-        assertFalse("Error: Poster Not Inserted Correctly", posterRowId == -1L);
+        assertFalse("Error: Movie Not Inserted Correctly", posterRowId == -1L);
 
         // First step: Get reference to writable database
         MovieDbHelper dbHelper = new MovieDbHelper(mContext);
@@ -159,7 +159,7 @@ public class TestDb extends AndroidTestCase {
         assertTrue( "Error: No Records returned from poster query", cursor.moveToFirst() );
 
         // Validate data in resulting Cursor with the original ContentValues
-        TestUtilities.validateCurrentRecord("Error: Poster Query Validation Failed",
+        TestUtilities.validateCurrentRecord("Error: Movie Query Validation Failed",
                 cursor, testValues);
 
         // Close the cursor and database

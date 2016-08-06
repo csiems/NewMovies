@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.siems.udacitymovies.BuildConfig;
-import com.siems.udacitymovies.models.Poster;
+import com.siems.udacitymovies.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +23,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class PosterApiService {
-    private static final String TAG = PosterApiService.class.getName();
+public class MovieApiService {
+    private static final String TAG = MovieApiService.class.getName();
     private Context mContext;
 
-    public PosterApiService(Context context) {
+    public MovieApiService(Context context) {
         this.mContext = context;
     }
 
@@ -56,8 +56,8 @@ public class PosterApiService {
         call.enqueue(callback);
     }
 
-    public ArrayList<Poster> processResults(Response response) {
-        ArrayList<Poster> movies = new ArrayList<>();
+    public ArrayList<Movie> processResults(Response response) {
+        ArrayList<Movie> movies = new ArrayList<>();
 
         try {
             String jsonData = response.body().string();
@@ -74,27 +74,29 @@ public class PosterApiService {
         return movies;
     }
 
-    private ArrayList<Poster> processArray(JSONArray specificArray) {
-        ArrayList<Poster> posters = new ArrayList<>();
+    private ArrayList<Movie> processArray(JSONArray specificArray) {
+        ArrayList<Movie> movies = new ArrayList<>();
         for (int i = 0; i < specificArray.length(); i++) {
             try {
                 JSONObject movieJSON = specificArray.getJSONObject(i);
-                String poster_path = movieJSON.getString("poster_path");
-                String overview = movieJSON.getString("overview");
-                String release_date = movieJSON.getString("release_date");
-                int id = movieJSON.getInt("id");
+                int movie_id = movieJSON.getInt("id");
                 String title = movieJSON.getString("title");
-                String backdrop_path = movieJSON.getString("backdrop_path");
+                String release_date = movieJSON.getString("release_date");
                 double vote_average = movieJSON.getDouble("vote_average");
+                int vote_count = movieJSON.getInt("vote_count");
+                String overview = movieJSON.getString("overview");
+                String poster_path = movieJSON.getString("poster_path");
+                double popularity = movieJSON.getDouble("popularity");
 
-                Poster poster = new Poster(poster_path, overview, release_date, id, title, backdrop_path, vote_average);
-                posters.add(poster);
+                Movie movie = new Movie(movie_id, title, release_date, vote_average, vote_count, overview, poster_path,
+                        popularity);
+                movies.add(movie);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, posters.toString());
-        return posters;
+        Log.d(TAG, movies.toString());
+        return movies;
     }
 
 }

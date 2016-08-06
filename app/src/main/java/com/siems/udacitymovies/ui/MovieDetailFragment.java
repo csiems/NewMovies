@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.siems.udacitymovies.R;
 import com.siems.udacitymovies.adapters.TrailerListAdapter;
-import com.siems.udacitymovies.models.Poster;
+import com.siems.udacitymovies.models.Movie;
 import com.siems.udacitymovies.models.Trailer;
 import com.siems.udacitymovies.services.TrailerApiService;
 import com.squareup.picasso.Picasso;
@@ -33,7 +33,7 @@ import okhttp3.Response;
 
 //TODO: Implement tab strip at top of view pager
 
-public class PosterDetailFragment extends Fragment implements View.OnClickListener{
+public class MovieDetailFragment extends Fragment implements View.OnClickListener{
     private static final int MAX_WIDTH = 185;
     private static final int MAX_HEIGHT = 278;
     @Bind(R.id.movieTitleTextView) TextView mMovieTitleTextView;
@@ -44,22 +44,22 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
     @Bind(R.id.overviewTextView) TextView mOverviewTextView;
     @Bind(R.id.recyclerview_trailers) RecyclerView mRecyclerView;
 
-    private Poster mPoster;
+    private Movie mMovie;
     public ArrayList<Trailer> mTrailers = new ArrayList<>();
     private TrailerListAdapter mAdapter;
 
-    public static PosterDetailFragment newInstance(Poster poster) {
-        PosterDetailFragment posterDetailFragment = new PosterDetailFragment();
+    public static MovieDetailFragment newInstance(Movie movie) {
+        MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("poster", Parcels.wrap(poster));
-        posterDetailFragment.setArguments(args);
-        return posterDetailFragment;
+        args.putParcelable("movie", Parcels.wrap(movie));
+        movieDetailFragment.setArguments(args);
+        return movieDetailFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPoster = Parcels.unwrap(getArguments().getParcelable("poster"));
+        mMovie = Parcels.unwrap(getArguments().getParcelable("movie"));
     }
 
 
@@ -67,26 +67,26 @@ public class PosterDetailFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_poster_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         ButterKnife.bind(this, view);
 
         //Initialize movie
-        mMovieTitleTextView.setText(mPoster.getTitle());
-        String posterUrl = "http://image.tmdb.org/t/p/w185" + mPoster.getPoster_path();
+        mMovieTitleTextView.setText(mMovie.getTitle());
+        String posterUrl = "http://image.tmdb.org/t/p/w185" + mMovie.getPoster_path();
         Picasso.with(view.getContext())
                 .load(posterUrl)
                 .resize(MAX_WIDTH, MAX_HEIGHT)
                 .centerCrop()
                 .into(mPosterDetailImageView);
-        mReleaseYearTextView.setText(mPoster.getRelease_date().substring(0,4));
-        mRatingTextView.setText(mPoster.getVote_average() + " / 10");
-        mOverviewTextView.setText(mPoster.getOverview());
+        mReleaseYearTextView.setText(mMovie.getRelease_date().substring(0,4));
+        mRatingTextView.setText(mMovie.getVote_average() + " / 10");
+        mOverviewTextView.setText(mMovie.getOverview());
 
         //Initialize button.
         mMarkAsFavoriteButton.setOnClickListener(this);
 
         //Get trailers for this movie here
-        queryTrailers(mPoster.getId());
+        queryTrailers(mMovie.getMovie_id());
 
         return view;
     }
