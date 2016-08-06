@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PosterDetailActivity">
+        <activity android:name=".ui.MovieDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
@@ -27,6 +27,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
+        <provider
+        android:authorities="com.siems.udacitymovies.app"
+        android:name=".data.MovieProvider" />
     </application>
 
 </manifest>

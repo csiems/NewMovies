@@ -4,115 +4,166 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
-/**
- * Defines table and column names for the weather database.
- */
 public class MovieContract {
 
-    // The "Content authority" is a name for the entire content provider, similar to the
-    // relationship between a domain name and its website.  A convenient string to use for the
-    // content authority is the package name for the app, which is guaranteed to be unique on the
-    // device.
+    // Content Authority => The name of the Content Provider
     public static final String CONTENT_AUTHORITY = "com.siems.udacitymovies.app";
 
-    // Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
-    // the content provider.
+    // Base content URI to access the data from the Content Provider
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    // Possible paths (appended to base content URI for possible URI's)
+    public static final String PATH_MOVIE = "movies";
     public static final String PATH_TRAILER = "trailers";
-    public static final String PATH_POSTER = "posters";
+    public static final String PATH_REVIEW = "reviews";
 
-    public static long normalizeDate(long startDate) {
-        // normalize the start date to the beginning of the (UTC) day
-        Time time = new Time();
-        time.set(startDate);
-        int julianDay = Time.getJulianDay(startDate, time.gmtoff);
-        return time.setJulianDay(julianDay);
-    }
+    public static final class MovieEntry implements BaseColumns {
 
-    public static final class PosterEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_POSTER).build();
+        // Content URI for the MovieEntry
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
 
+        // Constant strings to tell the difference between a list of items (CONTENT_TYPE)
+        // and a singe item (CONTENT_ITEM_TYPE)
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POSTER;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POSTER;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
 
-        public static Uri buildPosterUri(long id) {
+        public static final String TABLE_NAME = "movies";
+
+        // columns
+        public static final String COLUMN_MOVIE_ID = "movie_id"; // the movie id from the backend
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+        public static final String COLUMN_VOTE_COUNT = "vote_count";
+        public static final String COLUMN_OVERVIEW = "overview";
+        public static final String COLUMN_POSTER_PATH = "poster_path";
+        public static final String COLUMN_POPULARITY = "popularity";
+        public static final String COLUMN_RUNTIME = "runtime";
+        public static final String COLUMN_FAVORITE = "favorite"; // pseudo-boolean for favorite movie
+
+        /**
+         * This method creates a URI for addressing a movie according to its poster URL
+         *
+         * @param posterUrl The URL fetched from the cloud service
+         * @return The URI with the given {@code posterUrl} appended
+         */
+        public static Uri buildMovieWithPoster(String posterUrl) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(posterUrl.substring(1)) //remove the heading slash
+                    .build();
+        }
+
+        /**
+         * Build a Uri for a record of the table, using the ID
+         *
+         * @param id The ID of the record
+         * @return A new Uri with the given ID appended to the end of the path
+         */
+        public static Uri buildMovieWithId(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildPosterWithStartDate(String poster, long startDate) {
-            long normalizedDate = normalizeDate(startDate);
-            return CONTENT_URI.buildUpon().appendPath(poster)
-                    .appendQueryParameter(COLUMN_RELEASE_DATE,
-                            Long.toString(normalizedDate)).build();
-        }
-
-        public static long getReleaseDateFromUri(Uri uri){
-            String dateStr = uri.getQueryParameter(COLUMN_RELEASE_DATE);
-            if (dateStr != null && dateStr.length() > 0){
-                return Long.parseLong(dateStr);
-            }
-            else return 0;
-        }
-
-        public static String getTrailerFromUri(Uri uri){
+        /**
+         * This method does the opposite of {@code buildMovieWithPoster}, hence returns the
+         * stringly-typed URL
+         *
+         * @param uri The URI of the movie
+         * @return The poster URL fetched from the URI
+         */
+        public static String getPosterUrlFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
 
-        // TABLE AND COLUMN NAMES
-        // Table name
-        public static final String TABLE_NAME = "posters";
-        // Column with link to movie poster.
-        public static final String COLUMN_POSTER_PATH = "poster_path";
-        // Summary of movie
-        public static final String COLUMN_OVERVIEW = "overview";
-        // Date of movie's release in theaters.
-        public static final String COLUMN_RELEASE_DATE = "release_date";
-        // Int UID used to search for trailers and reviews.
-        public static final String COLUMN_ID = "id";
-        // Title of movie
-        public static final String COLUMN_TITLE = "title";
-        // Image designed to be displayed as background of a detail page
-        public static final String COLUMN_BACKDROP_PATH = "backdrop_path";
-        // Number indicating average vote, stored as a double and displayed on detail page
-        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+        /**
+         * Parse the ID of a record, or return -1 instead
+         *
+         * @param uri The Uri of the record
+         * @return The Id of the record or -1 if this doesn't apply
+         */
+        public static long getIdFromUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
     }
 
     public static final class TrailerEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRAILER).build();
+        // Content URI for the TrailerEntry
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRAILER).build();
 
+        // Constant strings to tell the difference between a list of items (CONTENT_TYPE)
+        // and a singe item (CONTENT_ITEM_TYPE)
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILER;
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILER;
 
-        public static Uri buildTrailerUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        public static final String TABLE_NAME = "trailers";
+
+        // columns
+        public static final String COLUMN_NAME = "title"; //trailer title
+        public static final String COLUMN_YOUTUBE_KEY = "youtube_key";
+        public static final String COLUMN_TRAILER_ID = "trailer_id";
+        public static final String COLUMN_MOVIE_ID = "movie_id"; // the movie id from the backend (used for joins)
+
+        /**
+         * Get the movie ID in the URI (the ID from the Backend)
+         *
+         * @param uri The trailer's URI with the movie ID
+         * @return The movie ID or -1 if doesn't exist
+         */
+        public static long getMovieIdFromUri(Uri uri) {
+            return ContentUris.parseId(uri);
         }
 
-        // TABLE AND COLUMN NAMES
-        // Table name
-        public static final String TABLE_NAME = "trailers";
-        // Column with the foreign key into the poster table.
-        public static final String COLUMN_POSTER_KEY = "poster_id";
-        // UID for trailer
-        public static final String COLUMN_TRAILER_ID = "id";
-        // String appended onto Youtube URL to find video
-        public static final String COLUMN_KEY = "key";
-        // Name of trailer displayed in list
-        public static final String COLUMN_NAME = "name";
-        // Hosting site (always Youtube)
-        public static final String COLUMN_SITE = "site";
-        // Display size (e.g. 1080)
-        public static final String COLUMN_SIZE = "size";
-        // Video type (usually trailer)
-        public static final String COLUMN_TYPE = "type";
+        /**
+         * Creates a trailer uri with the movie id (from the backend) appended
+         *
+         * @param movieId The movie ID
+         * @return the URI of the trailer
+         */
+        public static Uri buildTrailerWithId(long movieId) {
+            return ContentUris.withAppendedId(CONTENT_URI, movieId);
+        }
+    }
+
+    public static final class ReviewEntry implements BaseColumns {
+        // Content URI for the ReviewEntry
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEW).build();
+
+        // Constant strings to tell the difference between a list of items (CONTENT_TYPE)
+        // and a singe item (CONTENT_ITEM_TYPE)
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW;
+
+        public static final String TABLE_NAME = "reviews";
+
+        // columns
+        public static final String COLUMN_AUTHOR = "author"; //trailer title
+        public static final String COLUMN_CONTENT = "content";
+        public static final String COLUMN_REVIEW_ID = "review_id";
+        public static final String COLUMN_MOVIE_ID = "movie_id"; // the movie id from the backend (used for joins)
+
+        /**
+         * Get the movie ID in the URI (the ID from the Backend)
+         *
+         * @param uri The Uri of the review with the movie id appended
+         * @return The ID of the movie, or -1 if doesn't exist
+         */
+        public static long getMovieIdFromUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
+
+        /**
+         * Creates a trailer uri with the movie id (from the backend) appended
+         *
+         * @param insertedId The ID of the movie
+         * @return The uri of the review
+         */
+        public static Uri buildTrailerWithId(long insertedId) {
+            return ContentUris.withAppendedId(CONTENT_URI, insertedId);
+        }
     }
 }
