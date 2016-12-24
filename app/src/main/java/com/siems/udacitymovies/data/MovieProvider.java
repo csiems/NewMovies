@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
@@ -69,20 +70,89 @@ public class MovieProvider extends ContentProvider {
         return retCursor;
     }
 
+    /**
+     * Returns the type of the item pointed by a given URI
+     *
+     * @param uri A given content URI pointing to data in the sqlite database
+     * @return The type data pointed by the uri
+     */
     @Override
     public String getType(Uri uri) {
-        return null;
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case MOVIE:
+                return MovieContractOld.MovieEntry.CONTENT_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
+    /**
+     * Insert a new record into the table pointed by the Uri
+     *
+     * @param uri            The Uri that should point into a table
+     * @param values  Record to add into the table
+     * @return A Content Uri with the ID of the inserted row
+     */
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+    public Uri insert(Uri uri, ContentValues values) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        Uri returnedUri;
+
+        long insertedId;
+        switch (match) {
+            case MOVIE:
+                insertedId = db.insert(MovieContractOld.MovieEntry.TABLE_NAME, null, values);
+                if (insertedId > 0) {
+                    returnedUri = MovieContract.MovieEntry.buildMovieUri(insertedId);
+                } else {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnedUri;
     }
 
+    /**
+     * Deletes the records in the table pointed by the URI and match the other args
+     *
+     * @param uri           Uri of the table where to search the records to delete
+     * @param selection     A selection criteria to apply when filtering rows. If {@code null} then all
+     *                      rows are included.
+     * @param selectionArgs You may include ?s in selection, which will be replaced by the values
+     *                      from selectionArgs, in order that they appear in the selection. The values
+     *                      will be bound as Strings.
+     * @return The number of deleted rows
+     */
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int rowsDeleted;
+
+        //delete all rows and return the number of records deleted
+        if (selection == null) selection = "1";
+
+        switch (match) {
+            case MOVIE:
+                rowsDeleted = db.delete(MovieContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
+
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
