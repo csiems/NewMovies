@@ -32,29 +32,29 @@ public class TestUtilities extends AndroidTestCase {
 
     static ContentValues createTestPosterValues() {
         ContentValues testValues = new ContentValues();
-        testValues.put(MovieContract.PosterEntry.COLUMN_POSTER_PATH, "/cGOPbv9wA5gEejkUN892JrveARt.jpg");
-        testValues.put(MovieContract.PosterEntry.COLUMN_OVERVIEW, "Fearing the actions of a god-like " +
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_POSTER_PATH, "/cGOPbv9wA5gEejkUN892JrveARt.jpg");
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_OVERVIEW, "Fearing the actions of a god-like " +
                 "Super Hero left unchecked, Gotham City’s own formidable, forceful vigilante takes on " +
                 "Metropolis’s most revered, modern-day savior, while the world wrestles with what sort " +
                 "of hero it really needs. And with Batman and Superman at war with one another, a new " +
                 "threat quickly arises, putting mankind in greater danger than it’s ever known before.");
-        testValues.put(MovieContract.PosterEntry.COLUMN_RELEASE_DATE, "2016-03-23");
-        testValues.put(MovieContract.PosterEntry.COLUMN_ID, 209112);
-        testValues.put(MovieContract.PosterEntry.COLUMN_TITLE, "Batman v Superman: Dawn of Justice");
-        testValues.put(MovieContract.PosterEntry.COLUMN_BACKDROP_PATH, "/vsjBeMPZtyB7yNsYY56XYxifaQZ.jpg");
-        testValues.put(MovieContract.PosterEntry.COLUMN_VOTE_AVERAGE, 5.52);
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_RELEASE_DATE, "2016-03-23");
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_ID, 209112);
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_TITLE, "Batman v Superman: Dawn of Justice");
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_BACKDROP_PATH, "/vsjBeMPZtyB7yNsYY56XYxifaQZ.jpg");
+        testValues.put(MovieContractOld.PosterEntry.COLUMN_VOTE_AVERAGE, 5.52);
         return testValues;
     }
 
     static ContentValues createTestTrailerValues(long posterRowId) {
         ContentValues trailerValues = new ContentValues();
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_POSTER_ID, posterRowId);
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_ID, "56b7f59ac3a36806ec00fdcf");
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_KEY, "_gBnmKOixDM");
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_NAME, "First Look");
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_SITE, "YouTube");
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_SIZE, 1080);
-        trailerValues.put(MovieContract.TrailerEntry.COLUMN_TYPE, "Trailer");
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_POSTER_ID, posterRowId);
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_TRAILER_ID, "56b7f59ac3a36806ec00fdcf");
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_KEY, "_gBnmKOixDM");
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_NAME, "First Look");
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_SITE, "YouTube");
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_SIZE, 1080);
+        trailerValues.put(MovieContractOld.TrailerEntry.COLUMN_TYPE, "Trailer");
 
         return trailerValues;
     }

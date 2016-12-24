@@ -13,7 +13,6 @@ public class Movie {
     public String poster_path;
     public double popularity;
     public int runtime;
-    public int favorite;
 
     public Movie() {}
 
@@ -27,7 +26,6 @@ public class Movie {
         this.poster_path = poster_path;
         this.popularity = popularity;
         this.runtime = 0;
-        this.favorite = 0;
     }
 
     public int getMovie_id() {
@@ -66,9 +64,6 @@ public class Movie {
         return runtime;
     }
 
-    public int getFavorite() {
-        return favorite;
-    }
 }
 
 

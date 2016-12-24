@@ -29,7 +29,7 @@
         </activity>
         <provider
         android:authorities="com.siems.udacitymovies.app"
-        android:name=".data.MovieProvider" />
+        android:name=".data.MovieProviderOld" />
     </application>
 
 </manifest>

@@ -32,8 +32,8 @@ public class TestDb extends AndroidTestCase {
         // Note that there will be another table in the DB that stores the
         // Android metadata (db version information)
         final HashSet<String> tableNameHashSet = new HashSet<String>();
-        tableNameHashSet.add(MovieContract.PosterEntry.TABLE_NAME);
-        tableNameHashSet.add(MovieContract.TrailerEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContractOld.PosterEntry.TABLE_NAME);
+        tableNameHashSet.add(MovieContractOld.TrailerEntry.TABLE_NAME);
 
         mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
         SQLiteDatabase db = new MovieDbHelper(
@@ -57,7 +57,7 @@ public class TestDb extends AndroidTestCase {
                 tableNameHashSet.isEmpty());
 
         // now, do our tables contain the correct columns?
-        c = db.rawQuery("PRAGMA table_info(" + MovieContract.PosterEntry.TABLE_NAME + ")",
+        c = db.rawQuery("PRAGMA table_info(" + MovieContractOld.PosterEntry.TABLE_NAME + ")",
                 null);
 
         assertTrue("Error: This means that we were unable to query the database for table information.",
@@ -65,14 +65,14 @@ public class TestDb extends AndroidTestCase {
 
         // Build a HashSet of all of the column names we want to look for
         final HashSet<String> posterColumnHashSet = new HashSet<String>();
-        posterColumnHashSet.add(MovieContract.PosterEntry._ID);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_POSTER_PATH);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_OVERVIEW);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_RELEASE_DATE);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_ID);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_TITLE);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_BACKDROP_PATH);
-        posterColumnHashSet.add(MovieContract.PosterEntry.COLUMN_VOTE_AVERAGE);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry._ID);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_POSTER_PATH);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_OVERVIEW);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_RELEASE_DATE);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_ID);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_TITLE);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_BACKDROP_PATH);
+        posterColumnHashSet.add(MovieContractOld.PosterEntry.COLUMN_VOTE_AVERAGE);
 
         int columnNameIndex = c.getColumnIndex("name");
         do {
@@ -104,12 +104,12 @@ public class TestDb extends AndroidTestCase {
         ContentValues testValues = TestUtilities.createTestTrailerValues(posterRowId);
 
         // Insert ContentValues into database and get a row ID back
-        long trailerRowId = db.insert(MovieContract.TrailerEntry.TABLE_NAME, null, testValues);
+        long trailerRowId = db.insert(MovieContractOld.TrailerEntry.TABLE_NAME, null, testValues);
         assertTrue(trailerRowId != -1);
 
         // Query the database and receive a Cursor back
         Cursor trailerCursor = db.query(
-                MovieContract.TrailerEntry.TABLE_NAME,  // Table to Query
+                MovieContractOld.TrailerEntry.TABLE_NAME,  // Table to Query
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause
@@ -141,12 +141,12 @@ public class TestDb extends AndroidTestCase {
 
         // Insert ContentValues into database and get a row ID back
         long posterRowId;
-        posterRowId = db.insert(MovieContract.PosterEntry.TABLE_NAME, null, testValues);
+        posterRowId = db.insert(MovieContractOld.PosterEntry.TABLE_NAME, null, testValues);
         assertTrue(posterRowId != -1);
 
         // Query the database and receive a Cursor back
         Cursor cursor = db.query(
-                MovieContract.PosterEntry.TABLE_NAME,  // Table to Query
+                MovieContractOld.PosterEntry.TABLE_NAME,  // Table to Query
                 null, // all columns
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
