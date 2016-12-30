@@ -92,8 +92,8 @@ public class MovieProvider extends ContentProvider {
      * Insert a new record into the table pointed by the Uri
      *
      * @param uri            The Uri that should point into a table
-     * @param values  Record to add into the table
-     * @return A Content Uri with the ID of the inserted row
+     * @param values         Record to add into the table
+     * @return               A Content Uri with the ID of the inserted row
      */
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -154,8 +154,40 @@ public class MovieProvider extends ContentProvider {
     }
 
 
+    /**
+     * Updates a record on the table pointed by the URI.
+     *
+     * @param uri           Uri of the table where to search the records to update
+     * @param values        The new set of {@code ContentValues} to replace the old ones
+     * @param selection     A selection criteria to apply when filtering rows. If {@code null} then all
+     *                      rows are included.
+     * @param selectionArgs You may include ?s in selection, which will be replaced by the values
+     *                      from selectionArgs, in order that they appear in the selection. The values
+     *                      will be bound as Strings.
+     * @return The number of updated rows
+     */
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int rowsUpdated;
+
+        switch (match) {
+            case MOVIE:
+                rowsUpdated = db.update(
+                        MovieContractOld.MovieEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 }

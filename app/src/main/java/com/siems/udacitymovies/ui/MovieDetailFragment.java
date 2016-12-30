@@ -1,6 +1,11 @@
 package com.siems.udacitymovies.ui;
 
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 
 import com.siems.udacitymovies.R;
 import com.siems.udacitymovies.adapters.TrailerListAdapter;
+import com.siems.udacitymovies.data.MovieContract;
 import com.siems.udacitymovies.models.Movie;
 import com.siems.udacitymovies.models.Trailer;
 import com.siems.udacitymovies.services.TrailerApiService;
@@ -123,7 +129,48 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == mMarkAsFavoriteButton) {
-            Toast.makeText(getContext(), "I'm special!", Toast.LENGTH_SHORT).show();
+
+            long movieId;
+            Context context = getContext();
+
+//  public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+//                    String sortOrder) {
+
+
+            Cursor movieCursor = context.getContentResolver().query(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    null,
+                    MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                    new String[]{mMovie.getMovie_id() + ""},
+                    null
+                    );
+
+            if (movieCursor.moveToFirst()) {
+                int movieIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
+                movieId = movieCursor.getLong(movieIdIndex);
+                Toast.makeText(getContext(), "This movie is already here!", Toast.LENGTH_SHORT).show();
+            } else {
+                ContentValues values = new ContentValues();
+                values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovie_id());
+                values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
+                values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovie.getRelease_date());
+                values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVote_average());
+                values.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, mMovie.getVote_count());
+                values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getOverview());
+                values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, mMovie.getPoster_path());
+                values.put(MovieContract.MovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
+                values.put(MovieContract.MovieEntry.COLUMN_RUNTIME, mMovie.getRuntime());
+                Uri insertedUri = context.getContentResolver().insert(
+                        MovieContract.MovieEntry.CONTENT_URI,
+                        values
+                );
+
+                // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
+                movieId = ContentUris.parseId(insertedUri);
+
+                Toast.makeText(getContext(), movieId + "", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }

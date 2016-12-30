@@ -14,7 +14,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
+    // Creates db the first time program is run.
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String createMoviesTable = "CREATE TABLE " + MovieContractOld.MovieEntry.TABLE_NAME + " ( "
@@ -34,6 +34,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         db.execSQL(createMoviesTable);
     }
 
+    // Only gets called if database version number is incremented
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + MovieContractOld.MovieEntry.TABLE_NAME);
