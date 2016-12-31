@@ -129,13 +129,8 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == mMarkAsFavoriteButton) {
-
             long movieId;
             Context context = getContext();
-
-//  public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-//                    String sortOrder) {
-
 
             Cursor movieCursor = context.getContentResolver().query(
                     MovieContract.MovieEntry.CONTENT_URI,
@@ -148,7 +143,12 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
             if (movieCursor.moveToFirst()) {
                 int movieIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
                 movieId = movieCursor.getLong(movieIdIndex);
-                Toast.makeText(getContext(), "This movie is already here!", Toast.LENGTH_SHORT).show();
+                int rowsDeleted = context.getContentResolver().delete(
+                        MovieContract.MovieEntry.CONTENT_URI,
+                        MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                        new String[]{mMovie.getMovie_id() + ""}
+                );
+                Toast.makeText(getContext(), String.format("Removing %01d rows.", rowsDeleted), Toast.LENGTH_SHORT).show();
             } else {
                 ContentValues values = new ContentValues();
                 values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovie_id());
@@ -168,7 +168,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                 // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
                 movieId = ContentUris.parseId(insertedUri);
 
-                Toast.makeText(getContext(), movieId + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Adding movie in row " + movieId, Toast.LENGTH_SHORT).show();
             }
 
         }

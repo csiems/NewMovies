@@ -70,6 +70,13 @@ public class MovieProvider extends ContentProvider {
         return retCursor;
     }
 
+//    /**
+//     * Queries the DB for the for all Movies and converts to an ArrayList for adapter.
+//     */
+//    public ArrayList<Movie> readMovies() {
+//
+//    }
+
     /**
      * Returns the type of the item pointed by a given URI
      *
@@ -82,7 +89,7 @@ public class MovieProvider extends ContentProvider {
 
         switch (match) {
             case MOVIE:
-                return MovieContractOld.MovieEntry.CONTENT_TYPE;
+                return MovieContract.MovieEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -104,7 +111,7 @@ public class MovieProvider extends ContentProvider {
         long insertedId;
         switch (match) {
             case MOVIE:
-                insertedId = db.insert(MovieContractOld.MovieEntry.TABLE_NAME, null, values);
+                insertedId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
                 if (insertedId > 0) {
                     returnedUri = MovieContract.MovieEntry.buildMovieUri(insertedId);
                 } else {
@@ -175,7 +182,7 @@ public class MovieProvider extends ContentProvider {
         switch (match) {
             case MOVIE:
                 rowsUpdated = db.update(
-                        MovieContractOld.MovieEntry.TABLE_NAME,
+                        MovieContract.MovieEntry.TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);

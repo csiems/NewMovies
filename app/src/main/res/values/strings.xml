@@ -10,8 +10,10 @@
     <string name="pref_sort_key">sortOrder</string>
     <string name="pref_sort_popular">popularity</string>
     <string name="pref_sort_highest_rated">vote_average</string>
+    <string name="pref_sort_my_personal_favorites">my_personal_favorites</string>
     <string name="pref_sort_label_popular">Most Popular</string>
     <string name="pref_sort_label_highest_rated">Highest Rated</string>
+    <string name="pref_sort_label_my_personal_favorites">My Personal Favorites</string>
     <string name="pref_sort_default">popularity</string>
     <string name="action_refresh">Refresh</string>
 </resources>
