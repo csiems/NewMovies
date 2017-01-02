@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.siems.udacitymovies.R;
 import com.siems.udacitymovies.adapters.ReviewListAdapter;
@@ -94,6 +93,15 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         //Initialize button.
         mMarkAsFavoriteButton.setOnClickListener(this);
 
+        //Make sure right button is showing
+        if(movieIsAFavorite()) {
+            mMarkAsFavoriteButton.setText("Remove From Favorites");
+            mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorDangerButton));
+        } else {
+            mMarkAsFavoriteButton.setText("Mark As Favorite");
+            mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButton));
+        }
+
         //Get trailers and reviews for this movie here
         queryTrailers(mMovie.getMovie_id());
         queryReviews(mMovie.getMovie_id());
@@ -161,54 +169,80 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         });
     }
 
+    private boolean movieIsAFavorite() {
+        long movieId;
+        Context context = getContext();
+
+        //Query current movie to see if it exists.
+        Cursor movieCursor = context.getContentResolver().query(
+                MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                new String[]{mMovie.getMovie_id() + ""},
+                null
+        );
+
+        if (movieCursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void toggleFavoriteButton() {
+        long movieId;
+        Context context = getContext();
+
+        //Query current movie to see if it exists.
+        Cursor movieCursor = context.getContentResolver().query(
+                MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                new String[]{mMovie.getMovie_id() + ""},
+                null
+        );
+
+        //Movie is already in database, so we want to delete it.
+        if (movieCursor.moveToFirst()) {
+            int movieIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
+            movieId = movieCursor.getLong(movieIdIndex);
+            int rowsDeleted = context.getContentResolver().delete(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                    new String[]{mMovie.getMovie_id() + ""}
+            );
+            mMarkAsFavoriteButton.setText("Mark As Favorite");
+            mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButton));
+//                Toast.makeText(getContext(), String.format("Removing %01d rows.", rowsDeleted), Toast.LENGTH_SHORT).show();
+        } else {
+            //Movie does not exist yet, so we add it to the favorites database
+            ContentValues values = new ContentValues();
+            values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovie_id());
+            values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
+            values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovie.getRelease_date());
+            values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVote_average());
+            values.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, mMovie.getVote_count());
+            values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getOverview());
+            values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, mMovie.getPoster_path());
+            values.put(MovieContract.MovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
+            values.put(MovieContract.MovieEntry.COLUMN_RUNTIME, mMovie.getRuntime());
+            Uri insertedUri = context.getContentResolver().insert(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    values
+            );
+
+            // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
+            movieId = ContentUris.parseId(insertedUri);
+            mMarkAsFavoriteButton.setText("Remove From Favorites");
+            mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorDangerButton));
+//                Toast.makeText(getContext(), "Adding movie in row " + movieId, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v == mMarkAsFavoriteButton) {
-            long movieId;
-            Context context = getContext();
-
-            //Query current movie to see if it exists.
-            Cursor movieCursor = context.getContentResolver().query(
-                    MovieContract.MovieEntry.CONTENT_URI,
-                    null,
-                    MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                    new String[]{mMovie.getMovie_id() + ""},
-                    null
-                    );
-
-            //Movie is already in database, so we want to delete it.
-            if (movieCursor.moveToFirst()) {
-                int movieIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
-                movieId = movieCursor.getLong(movieIdIndex);
-                int rowsDeleted = context.getContentResolver().delete(
-                        MovieContract.MovieEntry.CONTENT_URI,
-                        MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                        new String[]{mMovie.getMovie_id() + ""}
-                );
-                Toast.makeText(getContext(), String.format("Removing %01d rows.", rowsDeleted), Toast.LENGTH_SHORT).show();
-            } else {
-                //Movie does not exist yet, so we add it to the favorites database
-                ContentValues values = new ContentValues();
-                values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovie_id());
-                values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());
-                values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovie.getRelease_date());
-                values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, mMovie.getVote_average());
-                values.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, mMovie.getVote_count());
-                values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getOverview());
-                values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, mMovie.getPoster_path());
-                values.put(MovieContract.MovieEntry.COLUMN_POPULARITY, mMovie.getPopularity());
-                values.put(MovieContract.MovieEntry.COLUMN_RUNTIME, mMovie.getRuntime());
-                Uri insertedUri = context.getContentResolver().insert(
-                        MovieContract.MovieEntry.CONTENT_URI,
-                        values
-                );
-
-                // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
-                movieId = ContentUris.parseId(insertedUri);
-
-                Toast.makeText(getContext(), "Adding movie in row " + movieId, Toast.LENGTH_SHORT).show();
-            }
-
+            toggleFavoriteButton();
         }
     }
 }
