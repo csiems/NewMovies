@@ -16,4 +16,8 @@
     <string name="pref_sort_label_my_personal_favorites">My Personal Favorites</string>
     <string name="pref_sort_default">popularity</string>
     <string name="action_refresh">Refresh</string>
+
+    <!-- Favorite state button -->
+    <string name="favorite_state_button_remove">Remove From Favorites</string>
+    <string name="favorite_state_button_add">Mark As Favorite</string>
 </resources>

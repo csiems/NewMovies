@@ -95,10 +95,10 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
         //Make sure right button is showing
         if(movieIsAFavorite()) {
-            mMarkAsFavoriteButton.setText("Remove From Favorites");
+            mMarkAsFavoriteButton.setText(R.string.favorite_state_button_remove);
             mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorDangerButton));
         } else {
-            mMarkAsFavoriteButton.setText("Mark As Favorite");
+            mMarkAsFavoriteButton.setText(R.string.favorite_state_button_add);
             mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButton));
         }
 
@@ -211,7 +211,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                     MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
                     new String[]{mMovie.getMovie_id() + ""}
             );
-            mMarkAsFavoriteButton.setText("Mark As Favorite");
+            mMarkAsFavoriteButton.setText(R.string.favorite_state_button_add);
             mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButton));
 //                Toast.makeText(getContext(), String.format("Removing %01d rows.", rowsDeleted), Toast.LENGTH_SHORT).show();
         } else {
@@ -233,7 +233,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
             // The resulting URI contains the ID for the row.  Extract the movieId from the Uri.
             movieId = ContentUris.parseId(insertedUri);
-            mMarkAsFavoriteButton.setText("Remove From Favorites");
+            mMarkAsFavoriteButton.setText(R.string.favorite_state_button_remove);
             mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorDangerButton));
 //                Toast.makeText(getContext(), "Adding movie in row " + movieId, Toast.LENGTH_SHORT).show();
         }
