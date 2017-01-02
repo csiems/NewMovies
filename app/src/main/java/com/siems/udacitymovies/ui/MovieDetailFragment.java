@@ -19,10 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siems.udacitymovies.R;
+import com.siems.udacitymovies.adapters.ReviewListAdapter;
 import com.siems.udacitymovies.adapters.TrailerListAdapter;
 import com.siems.udacitymovies.data.MovieContract;
 import com.siems.udacitymovies.models.Movie;
+import com.siems.udacitymovies.models.Review;
 import com.siems.udacitymovies.models.Trailer;
+import com.siems.udacitymovies.services.ReviewApiService;
 import com.siems.udacitymovies.services.TrailerApiService;
 import com.squareup.picasso.Picasso;
 
@@ -37,8 +40,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-//TODO: Implement tab strip at top of view pager
-
 public class MovieDetailFragment extends Fragment implements View.OnClickListener{
     private static final int MAX_WIDTH = 185;
     private static final int MAX_HEIGHT = 278;
@@ -48,11 +49,14 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Bind(R.id.ratingTextView) TextView mRatingTextView;
     @Bind(R.id.markAsFavoriteButton) Button mMarkAsFavoriteButton;
     @Bind(R.id.overviewTextView) TextView mOverviewTextView;
-    @Bind(R.id.recyclerview_trailers) RecyclerView mRecyclerView;
+    @Bind(R.id.recyclerview_trailers) RecyclerView mTrailerRecyclerView;
+    @Bind(R.id.recyclerview_reviews) RecyclerView mReviewRecyclerView;
 
     private Movie mMovie;
     public ArrayList<Trailer> mTrailers = new ArrayList<>();
-    private TrailerListAdapter mAdapter;
+    public ArrayList<Review> mReviews = new ArrayList<>();
+    private TrailerListAdapter mTrailerAdapter;
+    private ReviewListAdapter mReviewAdapter;
 
     public static MovieDetailFragment newInstance(Movie movie) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -67,7 +71,6 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         mMovie = Parcels.unwrap(getArguments().getParcelable("movie"));
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,18 +88,21 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                 .centerCrop()
                 .into(mPosterDetailImageView);
         mReleaseYearTextView.setText(mMovie.getRelease_date().substring(0,4));
-        mRatingTextView.setText(mMovie.getVote_average() + " / 10");
+        mRatingTextView.setText(String.format("%1s / 10", mMovie.getVote_average()));
         mOverviewTextView.setText(mMovie.getOverview());
 
         //Initialize button.
         mMarkAsFavoriteButton.setOnClickListener(this);
 
-        //Get trailers for this movie here
+        //Get trailers and reviews for this movie here
         queryTrailers(mMovie.getMovie_id());
+        queryReviews(mMovie.getMovie_id());
 
         return view;
     }
 
+
+    // Two background api calls that return the trailers and reviews
     private void queryTrailers(int movieId) {
         final TrailerApiService trailerApiService = new TrailerApiService(getActivity());
         String id = movieId + "";
@@ -114,12 +120,41 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new TrailerListAdapter(mTrailers);
-                        mRecyclerView.setAdapter(mAdapter);
+                        mTrailerAdapter = new TrailerListAdapter(mTrailers);
+                        mTrailerRecyclerView.setAdapter(mTrailerAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-                        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-                        mRecyclerView.setLayoutManager(layoutManager);
-                        mRecyclerView.setHasFixedSize(true);
+                        mTrailerRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                        mTrailerRecyclerView.setLayoutManager(layoutManager);
+                        mTrailerRecyclerView.setHasFixedSize(true);
+                    }
+                });
+            }
+        });
+    }
+
+    private void queryReviews(int movieId) {
+        final ReviewApiService reviewApiService = new ReviewApiService(getActivity());
+        String id = movieId + "";
+
+        reviewApiService.findReviews(id, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mReviews = reviewApiService.processResults(response);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mReviewAdapter = new ReviewListAdapter(mReviews);
+                        mReviewRecyclerView.setAdapter(mReviewAdapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                        mReviewRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                        mReviewRecyclerView.setLayoutManager(layoutManager);
+                        mReviewRecyclerView.setHasFixedSize(true);
                     }
                 });
             }
@@ -132,6 +167,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
             long movieId;
             Context context = getContext();
 
+            //Query current movie to see if it exists.
             Cursor movieCursor = context.getContentResolver().query(
                     MovieContract.MovieEntry.CONTENT_URI,
                     null,
@@ -140,6 +176,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                     null
                     );
 
+            //Movie is already in database, so we want to delete it.
             if (movieCursor.moveToFirst()) {
                 int movieIdIndex = movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
                 movieId = movieCursor.getLong(movieIdIndex);
@@ -150,6 +187,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                 );
                 Toast.makeText(getContext(), String.format("Removing %01d rows.", rowsDeleted), Toast.LENGTH_SHORT).show();
             } else {
+                //Movie does not exist yet, so we add it to the favorites database
                 ContentValues values = new ContentValues();
                 values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovie_id());
                 values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getTitle());

@@ -122,7 +122,6 @@ public class MovieGridListFragment extends Fragment {
                     }
                 });
             }
-
         });
     }
 
