@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    @Bind(R.id.viewPager) ViewPager mViewPager;
+    @Bind(R.id.movieDetailContainer) ViewPager mViewPager;
     private MoviePagerAdapter adapterViewPager;
     ArrayList<Movie> mMovies = new ArrayList<>();
 

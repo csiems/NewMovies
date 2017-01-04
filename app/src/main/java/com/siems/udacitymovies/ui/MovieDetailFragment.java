@@ -32,6 +32,7 @@ import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,15 +53,18 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Bind(R.id.recyclerview_reviews) RecyclerView mReviewRecyclerView;
 
     private Movie mMovie;
-    public ArrayList<Trailer> mTrailers = new ArrayList<>();
-    public ArrayList<Review> mReviews = new ArrayList<>();
+    private int mPosition;
+    private List<Movie> mMovies = new ArrayList<>();
+    private ArrayList<Trailer> mTrailers = new ArrayList<>();
+    private ArrayList<Review> mReviews = new ArrayList<>();
     private TrailerListAdapter mTrailerAdapter;
     private ReviewListAdapter mReviewAdapter;
 
-    public static MovieDetailFragment newInstance(Movie movie) {
+    public static MovieDetailFragment newInstance(List<Movie> movies, int position) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("movie", Parcels.wrap(movie));
+        args.putParcelable("movies", Parcels.wrap(movies));
+        args.putParcelable("position", Parcels.wrap(position));
         movieDetailFragment.setArguments(args);
         return movieDetailFragment;
     }
@@ -68,7 +72,9 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMovie = Parcels.unwrap(getArguments().getParcelable("movie"));
+        mMovies = Parcels.unwrap(getArguments().getParcelable("movies"));
+        mPosition = Parcels.unwrap(getArguments().getParcelable("position"));
+        mMovie = mMovies.get(mPosition);
     }
 
     @Override
@@ -103,8 +109,8 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         }
 
         //Get trailers and reviews for this movie here
-        queryTrailers(mMovie.getMovie_id());
-        queryReviews(mMovie.getMovie_id());
+//        queryTrailers(mMovie.getMovie_id());
+//        queryReviews(mMovie.getMovie_id());
 
         return view;
     }
@@ -187,6 +193,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         } else {
             return false;
         }
+
     }
 
     private void toggleFavoriteButton() {
@@ -236,6 +243,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
             mMarkAsFavoriteButton.setText(R.string.favorite_state_button_remove);
             mMarkAsFavoriteButton.setBackgroundColor(getResources().getColor(R.color.colorDangerButton));
 //                Toast.makeText(getContext(), "Adding movie in row " + movieId, Toast.LENGTH_SHORT).show();
+
         }
     }
 

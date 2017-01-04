@@ -88,7 +88,6 @@ public class MovieGridListFragment extends Fragment {
                 mMovies.add(movie);
             } while (movieCursor.moveToNext());
         }
-        movieCursor.close();
 
         mAdapter = new MovieGridAdapter(getActivity().getApplicationContext(), mMovies);
         mRecyclerView.setAdapter(mAdapter);

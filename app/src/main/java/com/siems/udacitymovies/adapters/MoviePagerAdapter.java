@@ -8,9 +8,10 @@ import com.siems.udacitymovies.models.Movie;
 import com.siems.udacitymovies.ui.MovieDetailFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MoviePagerAdapter extends FragmentPagerAdapter {
-    private ArrayList<Movie> mMovies;
+    private List<Movie> mMovies;
 
     public MoviePagerAdapter(FragmentManager fm, ArrayList<Movie> movies) {
         super(fm);
@@ -19,7 +20,7 @@ public class MoviePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return MovieDetailFragment.newInstance(mMovies.get(position));
+        return MovieDetailFragment.newInstance(mMovies, position);
     }
 
     @Override

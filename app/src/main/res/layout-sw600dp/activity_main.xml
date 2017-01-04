@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.siems.udacitymovies.ui.MainActivity">
+
+    <fragment
+        android:id="@+id/fragmentPosterGridList"
+        android:name="com.siems.udacitymovies.ui.MovieGridListFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        tools:layout="@layout/fragment_movie_grid_list" />
+
+    <View android:background="@color/colorAccent"
+        android:layout_width="2dp"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/movieDetailContainer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6">
+    </FrameLayout>
+
+</LinearLayout>
